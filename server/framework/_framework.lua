@@ -24,10 +24,10 @@ end
 function removeMoney(src, account, amount)
     if Config.Framework == "QBCore" then
         local Player = QBCore.Functions.GetPlayer(src)
-        Player.Functions.RemoveMoney(account,amount)
+        Player.Functions.RemoveMoney(account, amount)
     elseif Config.Framework == "ESX" then
         local xPlayer = ESX.GetPlayerFromId(src)
-        xPlayer.removeAccountMoney(account,amount)
+        xPlayer.removeAccountMoney(account, amount)
     end
 end
 
@@ -41,7 +41,7 @@ function giveItems(src, itemList)
             local Player = QBCore.Functions.GetPlayer(src)
             if Player then
                 for k, v in pairs(itemList) do
-                    Player.Functions.AddItem(v['name'],v['amount'], v['metadata'] or nil)
+                    Player.Functions.AddItem(v['name'], v['amount'], v['metadata'] or nil)
                 end
             end
         elseif Config.Framework == "ESX" then

@@ -1,6 +1,4 @@
-local allPoints = {}
-local checked = false
-local canAccess = false
+local allPoints, checked, canAccess = {}, false, false
 
 CreateThread(function()
     if Config.UsingTextUI then

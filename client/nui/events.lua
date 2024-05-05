@@ -1,8 +1,12 @@
 RegisterNetEvent("av_shops:open", function(index)
+    exports['av_shops']:openShop(index)
+end)
+
+exports('openShop', function(index)
     if not index then print("av_shops:open received null as shop index") return end
-    if not Config.Shops[index] then 
-        print("[ERROR] WRONG SHOP INDEX RECEIVED, "..index.." DOESN'T EXIST IN CONFIG.SHOPS") 
-        return 
+    if not Config.Shops[index] then
+        lib.print.error("WRONG SHOP INDEX RECEIVED, "..index.." DOESN'T EXIST IN CONFIG.SHOPS")
+        return
     end
     local shop = Config.Shops[index]
     local data = {}
@@ -16,7 +20,7 @@ RegisterNetEvent("av_shops:open", function(index)
     for k, v in pairs(shop['categories']) do
         if v['canAccess']() then
             local indext = #data['categories'] + 1
-            data['categories'][index] = {
+            data['categories'][indext] = {
                 type = v.type,
                 header = v.header, 
                 subheader = v.subheader, 
@@ -32,10 +36,12 @@ RegisterNetEvent("av_shops:open", function(index)
             v['image'] = getImage(v.name)
         end
         local indext = #data['products'] + 1
-        data['products'][index] = v
+        data['products'][indext] = v
     end
     data['lang'] = UILang
     SetNuiFocus(true,true)
+    --exports['utility_pausemenu']:DisableMenus(true)
+    LocalPlayer.state.invBusy = true
     SendNUIMessage({
         action = "open",
         data = data
@@ -47,6 +53,8 @@ RegisterNUICallback("close", function(data,cb)
         action = "close"
     })
     SetNuiFocus(false,false)
+    --exports['utility_pausemenu']:DisableMenus(false)
+    LocalPlayer.state.invBusy = false
     cb("ok")
 end)
 
